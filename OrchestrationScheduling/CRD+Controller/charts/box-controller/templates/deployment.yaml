@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ .Release.Name }}
+      containers:
+      - name: box
+        image: {{ .Values.image }}
+        args:
+          - ./box-controller
+          - -resync-period={{ .Values.boxArgs.reSyncPeriod }}
+          - -v={{ .Values.boxArgs.logLevel }}
+          - -worker={{ .Values.boxArgs.worker }}
+          - -box-controller-enable={{ .Values.boxArgs.enableBox }}
+          - -boxdeployment-controller-enable={{ .Values.boxArgs.enableBoxDeployment }}
+          - -boxstatefulset-controller-enable={{ .Values.boxArgs.enableBoxStatefulSet }}
+          - -kube-config-qps={{ .Values.boxArgs.kubeQPS }}
+          - -kube-config-burst={{ .Values.boxArgs.kubeBurst }}
+        env:
+          - name: OPERATOR_NAME
+            value: {{ .Release.Name }}
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        {{- with .Values.resources }}
+        resources:
+          {{ toYaml . | nindent 10 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - {{ .Release.Name }}
+              topologyKey: "kubernetes.io/hostname"
+      {{- with .Values.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}

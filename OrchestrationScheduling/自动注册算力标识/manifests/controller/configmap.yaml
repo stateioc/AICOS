@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-config
+  namespace: cncos-system
+data:
+  config.json: |
+    [
+      {
+        "serverURL": "http://resource-server.cncos-system.svc.cluster.local:8080",
+        "type": "local"
+      },
+      {
+        "serverURL": "http://apps.bkce7.bktencent.com/stag--hlht-open-cnc/api/v1/provider/compute_ids/",
+        "type": "remote",
+        "headers": {
+          "Accept": "application/json, text/plain, */*",
+          "Content-Type": "application/json;charset=UTF-8",
+          "X-CLIENT-ID": "f46bbdd1424108c082db52e12728b52a",
+          "X-CLIENT-SECRET": "5dbcc3c0f02c6a29125a30817eeb7a20hAnWFidrvVLEkuJGNFuR5dfPR5WevasmFqoSp12r0tdEtmV0tXh2zOESw1JqEUb2GPkjDH75ELsVg7RKzysDP0r8p8pntcj5"
+        }
+      }
+    ]

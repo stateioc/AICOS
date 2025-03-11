@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-server
+  namespace: cncos-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resource-server
+  template:
+    metadata:
+      labels:
+        app: resource-server
+    spec:
+      containers:
+      - name: resource-server
+        image: wenxinlee/register-power-resources-server:20240328144528
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: resource-server
+  namespace: cncos-system
+spec:
+  selector:
+    app: resource-server
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30080
+  type: NodePort

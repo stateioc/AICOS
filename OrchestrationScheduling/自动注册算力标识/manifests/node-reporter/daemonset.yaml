@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-reporter
+  namespace: cncos-system
+spec:
+  selector:
+    matchLabels:
+      name: node-reporter
+  template:
+    metadata:
+      labels:
+        name: node-reporter
+    spec:
+      hostNetwork: true
+      serviceAccountName: node-reporter
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+      containers:
+        - name: node-reporter
+          image: wenxinlee/register-power-resources-node-reporter:20240328144528
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            limits:
+              cpu: "0.1"
+              memory: "100Mi"
+          volumeMounts:
+            - name: proc
+              mountPath: /host/proc
+              readOnly: true
+      volumes:
+        - name: proc
+          hostPath:
+            path: /proc

@@ -1,0 +1,11 @@
+.avatar_url {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.avatar_url img {
+    display: inline-block;
+    margin-left: 10px;
+    border-radius: 100%;
+}

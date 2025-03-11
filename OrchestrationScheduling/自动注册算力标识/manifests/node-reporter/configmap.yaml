@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chip-codes
+  namespace: cncos-system
+data:
+  A100: "00000000"
+  H100: "00000001"
+  A800: "00000010"
+  HUAWEI_Ascend_310: "00000011"
+  HUAWEI_Ascend_910: "00000100"
+  V100: "00000101"
+  T4: "00000110"
+  Xeon: "00000111"
+  MLU290: "00001000"
+  MLU590: "00001001"
+  H800: "00001010"
+  Xeon_platinum-8338C: "00001011"
+  Xeon_silver-4314: "00001100"
+  Xeon_gold-5218: "00001101"
+  Xeon_gold-6267C: "00001110"
+  BM1684: "00001111"
+  BM1684X: "00010000"
+  Other: "11111111"

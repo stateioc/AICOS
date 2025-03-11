@@ -1,0 +1,75 @@
+apiVersion: cncos.io/v1alpha1
+kind: BoxDeployment
+metadata:
+  annotations:
+    componentName: container-middleground
+  labels:
+    cn.ctcdn.walrus.eks: deployment
+    policy.kruise.io/delete-protection: Always
+  name: new-boxdp1
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      run: hello-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        componentName: container-middleground
+        platform: Jupiter
+      labels:
+        run: hello-app
+    spec:
+      affinity:
+        nodeAffinity: {}
+      containers:
+      - image: hello-app:v1.0
+        imagePullPolicy: IfNotPresent
+        lifecycle: {}
+        name: container01
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsConfig: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+
+---
+apiVersion: cncos.io/v1alpha1
+kind: Box
+metadata:
+  name: cncos-box
+spec:
+  # boxName: cncos-box
+  # image: nginx:v1.0
+  # imagePullPolicy: IfNotPresent
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: walus-opa
+    name: opaconfig
+
+  containers:
+  - image: hello-app:v1.0
+    imagePullPolicy: IfNotPresent
+    name: cncos-box-abcd
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/opa/config/
+      name: opaconfig
+    env:
+    - name: CONFIG_DIR
+      valueFrom:
+        configMapKeyRef:
+          key: WALRUS_CONFIG_DIR
+          name: cm-zcxt
+

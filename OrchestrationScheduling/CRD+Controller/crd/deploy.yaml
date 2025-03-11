@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: boxns
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: boxsa
+  namespace: boxns
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: box-clusterrole
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  # 这里不知道为什么不能写成 cncos.io, 集群内运行时会提示没有 box/boxdeployment list 权限
+  # - 'cncos.io'
+  - '*'
+  resources:
+  - boxes
+  - boxes/status
+  - boxdeployments
+  - boxdeployments/status
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: boxsa-clusterrolebinding
+subjects:
+- kind: ServiceAccount
+  name: boxsa
+  namespace: boxns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: box-clusterrole
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: box-controller
+  namespace: boxns
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: box-controller
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: box-controller
+    spec:
+      containers:
+      - args:
+        - ./box-controller
+        - -resync-period=0
+        - -v=4
+        - -worker=1
+        - -box-controller-enable=true
+        - -boxdeployment-controller-enable=true
+        image: harbor.ctyuncdn.cn/devops/box-controller:v0.6
+        imagePullPolicy: IfNotPresent
+        name: box-controller
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: boxsa
+      serviceAccountName: boxsa
+      terminationGracePeriodSeconds: 30

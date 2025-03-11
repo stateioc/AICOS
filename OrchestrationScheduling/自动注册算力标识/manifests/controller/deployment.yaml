@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-controller
+  namespace: cncos-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resource-controller
+  template:
+    metadata:
+      labels:
+        app: resource-controller
+    spec:
+      hostAliases:
+      - ip: "0.0.0.0"
+        hostnames:
+        - "k8s-api.cncos.local"
+      - ip: "123.207.6.164"
+        hostnames:
+        - "apps.bkce7.bktencent.com"
+      containers:
+      - name: resource-controller
+        image: wenxinlee/register-power-resources-controller:20240328144528
+        command: ["/bin/bash", "-c", "/root/controller register"]
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+          - name: config-volume
+            mountPath: /root/config
+      serviceAccountName: resource-controller
+      volumes:
+        - name: config-volume
+          configMap:
+            name: server-config

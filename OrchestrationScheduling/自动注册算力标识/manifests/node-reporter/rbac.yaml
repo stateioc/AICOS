@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: node-reporter
+  namespace: cncos-system
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: node-reporter
+rules:
+  - apiGroups: [""]
+    resources: ["nodes", "pods", "configmaps"]
+    verbs: ["get", "update", "list"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: node-reporter
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: node-reporter
+subjects:
+  - kind: ServiceAccount
+    name: node-reporter
+    namespace: cncos-system

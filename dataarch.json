@@ -1,0 +1,75 @@
+CPU = 
+{
+"cpu_type":" ", # 型号  char
+"instruction_set_architecture":" "，# 指令集架构 char
+"main_frequency": , # 主频 （单位：GHz） number
+"max_turbo_frequency": ,  # 最大加速频率 （单位：GHz） number
+"core": ,  #内核数 （单位：个） number
+"thread": ,  # 线程数 （单位：个） number
+"power": ,  # 功率 （单位：W） number
+"cache": ,  # 缓存 （单位：MB） number
+"cpu_bandwidth": ,  # CPU 带宽 （单位：GB/s） number
+"memory_ratios": ,  # 内存配比 （单位：GB） number
+"available_cores": ,  # 剩余可用核数 （单位：个） number
+"cpu_usage": ,  # CPU 利用率 （单位：%） number
+"floating_computility": ,  # 浮点计算能力 （单位：TFLOPS） number
+"integer_computility": ,  # 整型计算能力 （单位：TOPS） number
+}
+
+GPU = 
+{
+"gpu_type":" ", # 型号  char
+"architecture":" " # 架构  char
+"core": , #核心数 (单位：个) number
+"graphic_memory_bitwidth": , # 显存位宽 (单位：位) number
+"graphic_memory_bandwidth": , # 显存带宽(单位：GB/s) number
+"graphic_memory_capacity": , # 显存容量(单位：GB) number
+"power_consumption": , # 功耗(单位：W) number
+"exclusive": , # 独占/共享 ture/false
+"max_gpu_instance": , # 允许最大GPU实例数(单位：个) number
+"available_gpu_graphic_memory": , # 可用GPU显存(单位：GB) number
+"gpu_usage": , # GPU利用率(单位：%) number
+"INT4_computility": , # INT4整型计算能力(单位：TOPS) number
+"INT8_computility": , # INT8 整型计算能力 (单位：TOPS) number
+"INT16_computility": , # INT16 整型计算能力 (单位：TOPS) number
+"FP16_computility": , # 半精度浮点计算能力(单位：TFLOPS) number
+"FP32_computility": , # 单精度浮点计算能力(单位：TFLOPS) number
+"FP64_computility": , # 双精度浮点计算能力(单位：TFLOPS) number
+"graphical_rendering_capability": , # 图形渲染能力(单位：FPS) number
+}
+
+NPU =
+{
+"architecture":" " # 架构  char
+"main_frequency": , # 主频 （单位：GHz） number
+"npu_type": , # 型号 number
+"num": , # 数量(单位：个) number
+"available_num": , # 可用数量(单位：个) number
+"usage": , # 利用率(单位：%) number
+}
+
+DPU =
+{
+
+}
+
+FPGA =
+{
+"average_forwarding_delay": , # 转发平均时延(单位：ms) number
+"forwarding_throughput": , # 转发吞吐量(单位：Gbps) number
+"read_write_total_IOPS": , # (单位：IOPS) number
+}
+
+ASIC =
+{
+"INT4_computility": , # INT4整型计算能力(单位：TOPS)  number
+"INT8_computility": , # INT8 整型计算能力 (单位：TOPS) number
+"INT16_computility": , # INT16 整型计算能力 (单位：TOPS) number
+"FP16_computility": , # 半精度浮点计算能力(单位：TFLOPS) number
+"FP32_computility": , # 单精度浮点计算能力(单位：TFLOPS) number
+"FP64_computility": , # 双精度浮点计算能力(单位：TFLOPS) number
+"BF16_capability": , # BF16(单位：TFLOPS) number
+}
+
+
+

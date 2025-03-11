@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head><link rel="icon" href="{{ STATIC_URL }}dist/images/favicon.png" type="image/x-icon"/>
+<link rel="shortcut icon" href="{{ STATIC_URL }}dist/images/favicon.png" type="image/x-icon"/>
+<meta charset="utf-8">
+<title>首页</title>
+<script defer="defer" src="{{ STATIC_URL }}dist/js/runtime~main.js"></script>
+<script defer="defer" src="{{ STATIC_URL }}dist/js/chunk-vendors.js"></script>
+<script defer="defer" src="{{ STATIC_URL }}dist/js/main.js"></script>
+<link href="{{ STATIC_URL }}dist/css/main.css" rel="stylesheet">
+</head>
+<body>
+<div id="app"></div>
+<script>
+    var BK_CNC_AJAX_URL_PREFIX = '{{ BK_CNC_AJAX_URL_PREFIX }}'
+    var SITE_URL = '{{ SITE_URL }}'
+    var BK_STATIC_URL = '{{ BK_STATIC_URL }}'
+    var BKPAAS_APP_ID = '{{ BKPAAS_APP_ID }}'
+    var BKPAAS_APP_SECRET = '{{ BKPAAS_APP_SECRET }}'
+</script>
+</body>
+</html>

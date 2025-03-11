@@ -1,0 +1,33 @@
+replicas: 1
+
+image: docker.io/sangshen/box-controller:dev
+
+boxArgs:
+  logLevel: 2
+  reSyncPeriod: 30
+  worker: 2
+  enableBox: true
+  enableBoxDeployment: true
+  enableBoxStatefulSet: true
+  kubeQPS: 100
+  kubeBurst: 200
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 2Gi
+  requests:
+    cpu: "1"
+    memory: 2Gi
+
+nodeSelector: {}
+tolerations: {}
+#  - effect: NoSchedule
+#    key: harm.cn/build
+#    operator: Exists
+#  - effect: NoExecute
+#    key: node.kubernetes.io/unreachable
+#    operator: Exists
+
+rbac:
+  clusterRole: cluster-admin
